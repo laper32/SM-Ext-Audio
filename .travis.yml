@@ -1,0 +1,20 @@
+language: rust
+git:
+  depth: 50
+jobs:
+  - stage: build
+    name: Build for Win32 x86 MSVC/CMake and deploy
+    cache: cargo
+    os: windows
+    language: rust
+    before_script:
+    - git clone https://github.com/alliedmodders/sourcemod --recursive -b 1.10-dev deps/sourcemod
+    - git clone https://github.com/alliedmodders/metamod-source -b 1.10-dev deps/mmsource
+    - git clone https://github.com/alliedmodders/hl2sdk -b csgo deps/hl2sdk-csgo
+    env:
+    - SOURCEMOD=deps/sourcemod
+    - MMSOURCE=deps/mmsource
+    - HL2SDKCSGO=deps/hl2sdk-csgo
+    script:
+    - rustup target add i686-pc-windows-msvc --release
+    - cargo build --target i686-pc-windows-msvc --release
